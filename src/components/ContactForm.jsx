@@ -1,179 +1,131 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../firebase";
-import { FaPaperPlane, FaSpinner, FaCheckCircle, FaExclamationCircle } from "react-icons/fa";
+import emailjs from "@emailjs/browser";
 
 export default function ContactForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [statusText, setStatusText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState(null); // 'success' | 'error' | null
+
+  useEffect(() => {
+    emailjs.init("ooRPw6P35bA96Jr64");
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) return;
+    const trimmedName = name.trim();
+    const trimmedEmail = email.trim();
+    const trimmedMessage = message.trim();
+    if (!trimmedName || !trimmedEmail || !trimmedMessage) {
+      setStatusText("⚠️ Please fill in all fields!");
+      return;
+    }
+
     setIsSubmitting(true);
-    setStatus(null);
+    setStatusText("");
 
     try {
-      const ref = collection(db, "inquiries");
-      await addDoc(ref, {
-        name: name.trim().slice(0, 100),
-        email: email.trim().slice(0, 254),
-        message: message.trim().slice(0, 5000),
-        createdAt: serverTimestamp(),
-        source: "website_contact_form"
+      await addDoc(collection(db, "messages"), {
+        name: trimmedName,
+        email: trimmedEmail,
+        message: trimmedMessage,
+        createdAt: serverTimestamp()
       });
 
-      setStatus("success");
+      await emailjs.send(
+        "service_k9f1r3a",
+        "template_u6vph33",
+        { name: trimmedName, email: trimmedEmail, message: trimmedMessage }
+      );
+
+      setStatusText("✅ Message sent successfully!");
       setName("");
       setEmail("");
       setMessage("");
-    } catch (error) {
-      setStatus("error");
+    } catch (err) {
+      setStatusText("❌ Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
-            Full Name *
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            maxLength={100}
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '16px',
-              borderRadius: '8px',
-              backgroundColor: '#1e293b',
-              border: '2px solid #475569',
-              color: '#ffffff',
-              fontSize: '16px',
-              outline: 'none',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#3A7BD5'}
-            onBlur={(e) => e.target.style.borderColor = '#475569'}
-            placeholder="Your full name"
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
-            Email Address *
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            maxLength={254}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '16px',
-              borderRadius: '8px',
-              backgroundColor: '#1e293b',
-              border: '2px solid #475569',
-              color: '#ffffff',
-              fontSize: '16px',
-              outline: 'none',
-              transition: 'border-color 0.3s ease'
-            }}
-            onFocus={(e) => e.target.style.borderColor = '#3A7BD5'}
-            onBlur={(e) => e.target.style.borderColor = '#475569'}
-            placeholder="your.email@example.com"
-          />
-        </div>
-      </div>
+  const containerStyle = {
+    background: "rgba(255, 255, 255, 0.05)",
+    border: "2px solid rgba(0, 255, 255, 0.2)",
+    borderRadius: 20,
+    padding: 40,
+    width: "100%",
+    maxWidth: 420,
+    boxShadow: "0 0 15px rgba(0, 255, 255, 0.3)",
+    transition: "0.3s ease-in-out",
+    margin: "0 auto"
+  };
 
-      <div>
-        <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
-          Project Details / Message *
-        </label>
+  const inputStyle = {
+    width: "100%",
+    background: "rgba(255, 255, 255, 0.1)",
+    border: "1px solid rgba(0, 255, 255, 0.4)",
+    borderRadius: 12,
+    padding: "12px 15px",
+    color: "#fff",
+    fontSize: 15,
+    outline: "none",
+    marginBottom: 15,
+    transition: "0.3s"
+  };
+
+  const buttonStyle = {
+    width: "100%",
+    padding: 12,
+    border: "none",
+    background: "linear-gradient(90deg, #00ffff, #0077ff)",
+    color: "#000",
+    fontWeight: "bold",
+    borderRadius: 20,
+    cursor: "pointer",
+    transition: "all 0.3s ease",
+    fontSize: 15
+  };
+
+  return (
+    <div style={containerStyle}>
+      <h2 style={{ textAlign: "center", color: "#00ffff", marginBottom: 20, letterSpacing: 1 }}>Contact Us</h2>
+      <form onSubmit={handleSubmit} id="contactForm">
+        <input
+          type="text"
+          id="name"
+          placeholder="Your Name"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          style={inputStyle}
+        />
+        <input
+          type="email"
+          id="email"
+          placeholder="Your Email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={inputStyle}
+        />
         <textarea
           id="message"
-          name="message"
+          rows={5}
+          placeholder="Your Message"
           required
-          rows={6}
-          maxLength={5000}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '16px',
-            borderRadius: '8px',
-            backgroundColor: '#1e293b',
-            border: '2px solid #475569',
-            color: '#ffffff',
-            fontSize: '16px',
-            outline: 'none',
-            transition: 'border-color 0.3s ease',
-            resize: 'none'
-          }}
-          onFocus={(e) => e.target.style.borderColor = '#3A7BD5'}
-          onBlur={(e) => e.target.style.borderColor = '#475569'}
-          placeholder="Tell us about your project, requirements, timeline, or any questions you have..."
+          style={{ ...inputStyle, resize: "vertical" }}
         />
-      </div>
-
-      <div className="flex items-center gap-4">
-        <motion.button
-          type="submit"
-          disabled={isSubmitting}
-          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-          whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-          className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <>
-              <FaSpinner className="animate-spin" />
-              Sending...
-            </>
-          ) : (
-            <>
-              <FaPaperPlane />
-              Send Message
-            </>
-          )}
-        </motion.button>
-
-        {status === "success" && (
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 text-green-400"
-          >
-            <FaCheckCircle />
-            <span>Message sent successfully!</span>
-          </motion.div>
-        )}
-
-        {status === "error" && (
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 text-red-400"
-          >
-            <FaExclamationCircle />
-            <span>Something went wrong. Please try again.</span>
-          </motion.div>
-        )}
-      </div>
-    </form>
+        <button type="submit" style={buttonStyle} disabled={isSubmitting}>
+          {isSubmitting ? "Sending..." : "Send Message"}
+        </button>
+      </form>
+      <p id="status" style={{ marginTop: 10, textAlign: "center", color: "#00ffff", fontSize: 14 }}>{statusText}</p>
+    </div>
   );
 }
-
-
