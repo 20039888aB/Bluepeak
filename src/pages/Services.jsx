@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { 
   FaCode, 
   FaServer, 
@@ -248,22 +249,24 @@ export default function Services() {
               Let's discuss how we can help bring your vision to life with our comprehensive technology solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="/contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-              >
-                Get Free Consultation
-              </motion.a>
-              <motion.a
-                href="/projects"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-slate-600 text-slate-200 rounded-lg font-semibold hover:border-skyblue hover:text-skyblue transition-all duration-300"
-              >
-                View Our Work
-              </motion.a>
+              <Link to="/contact">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                >
+                  Get Free Consultation
+                </motion.div>
+              </Link>
+              <Link to="/projects">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 border-2 border-slate-600 text-slate-200 rounded-lg font-semibold hover:border-skyblue hover:text-skyblue transition-all duration-300"
+                >
+                  View Our Work
+                </motion.div>
+              </Link>
             </div>
           </motion.div>
         </div>

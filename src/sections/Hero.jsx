@@ -227,13 +227,13 @@ export default function Hero() {
                 to="/services"
                 className="px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
-                Our Services
+                View Our Services
               </Link>
               <Link
                 to="/contact"
                 className="px-8 py-4 border-2 border-slate-600 text-slate-200 rounded-lg font-semibold hover:border-skyblue hover:text-skyblue transition-all duration-300"
               >
-                Get Started
+                Start a Project
               </Link>
             </motion.div>
 

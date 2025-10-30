@@ -99,7 +99,7 @@ export default function TeamSection() {
         { icon: FaGithub, url: "#" },
         { icon: FaLinkedin, url: "#" },
         { icon: FaTwitter, url: "#" },
-        { icon: FaEnvelope, url: "mailto:felix@bluepeak.com" }
+        { icon: FaEnvelope, url: "mailto:bluepeakw@gmail.com" }
       ]
     },
     {
@@ -111,7 +111,7 @@ export default function TeamSection() {
         { icon: FaGithub, url: "#" },
         { icon: FaLinkedin, url: "#" },
         { icon: FaTwitter, url: "#" },
-        { icon: FaEnvelope, url: "mailto:brother@bluepeak.com" }
+        { icon: FaEnvelope, url: "mailto:bluepeakw@gmail.com" }
       ]
     }
   ];

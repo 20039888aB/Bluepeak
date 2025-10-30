@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 import { 
   FaExternalLinkAlt, 
   FaGithub, 
@@ -96,7 +97,13 @@ const ProjectCard = ({ project, delay = 0 }) => {
         </div>
         
         <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-skyblue transition-colors">
-          {project.title}
+          {project.liveUrl ? (
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+              {project.title}
+            </a>
+          ) : (
+            project.title
+          )}
         </h3>
         
         <p className="text-slate-300 text-sm mb-4 leading-relaxed">
@@ -288,6 +295,61 @@ export default function Projects() {
     }
   ];
 
+  // Live websites
+  projects.push(
+    {
+      title: "Optimal Family Hospital",
+      category: "Web Development",
+      status: "Live",
+      description: "Public-facing website for Optimal Family Hospital with services, departments, and contact information.",
+      features: [
+        "Service and department listings",
+        "Doctor profiles and contact",
+        "Responsive design",
+        "Appointment/contact CTA"
+      ],
+      technologies: ["React", "Tailwind CSS", "Vite"],
+      duration: "Ongoing",
+      teamSize: "2 developers",
+      liveUrl: "https://optimalfamilyhospital.com",
+      githubUrl: "#"
+    },
+    {
+      title: "FM Ngola",
+      category: "Web Development",
+      status: "Live",
+      description: "Modern company website showcasing brand, services, and engagement channels.",
+      features: [
+        "Services overview",
+        "Contact and social links",
+        "Performance optimized",
+        "SEO-friendly meta"
+      ],
+      technologies: ["React", "Tailwind CSS", "Vite"],
+      duration: "Ongoing",
+      teamSize: "2 developers",
+      liveUrl: "https://fmngola.netlify.app",
+      githubUrl: "#"
+    },
+    {
+      title: "M Ngola",
+      category: "Web Development",
+      status: "Live",
+      description: "Clean, responsive business website with service highlights and contact options.",
+      features: [
+        "Responsive layout",
+        "Service highlights",
+        "Contact CTA",
+        "Fast loading"
+      ],
+      technologies: ["React", "Tailwind CSS", "Vite"],
+      duration: "Ongoing",
+      teamSize: "2 developers",
+      liveUrl: "https://mngola.netlify.app",
+      githubUrl: "#"
+    }
+  );
+
   const categories = ["All", ...new Set(projects.map(project => project.category))];
   const filteredProjects = selectedCategory === "All" 
     ? projects 
@@ -387,22 +449,24 @@ export default function Projects() {
               Let's discuss how we can help bring your vision to life with our proven expertise and innovative solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.a
-                href="/contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
-              >
-                Start Your Project
-              </motion.a>
-              <motion.a
-                href="/services"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 border-2 border-slate-600 text-slate-200 rounded-lg font-semibold hover:border-skyblue hover:text-skyblue transition-all duration-300"
-              >
-                View Our Services
-              </motion.a>
+              <Link to="/contact">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                >
+                  Start Your Project
+                </motion.div>
+              </Link>
+              <Link to="/services">
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 border-2 border-slate-600 text-slate-200 rounded-lg font-semibold hover:border-skyblue hover:text-skyblue transition-all duration-300"
+                >
+                  View Our Services
+                </motion.div>
+              </Link>
             </div>
           </motion.div>
         </div>

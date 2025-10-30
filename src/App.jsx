@@ -2,6 +2,8 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import FixedPhoneIcon from "./components/FixedPhoneIcon";
+import BluePeakAI from "./components/BluePeakAI";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import Projects from "./pages/Projects";
@@ -22,6 +24,8 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <FixedPhoneIcon />
+      <BluePeakAI />
     </div>
   );
 }

@@ -89,7 +89,13 @@ const ProjectCard = ({ project, delay = 0 }) => {
         </div>
         
         <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-skyblue transition-colors">
-          {project.title}
+          {project.liveUrl ? (
+            <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+              {project.title}
+            </a>
+          ) : (
+            project.title
+          )}
         </h3>
         
         <p className="text-slate-300 text-sm mb-4 leading-relaxed">
@@ -187,6 +193,43 @@ export default function ProjectsPreview() {
       githubUrl: "#"
     }
   ];
+
+  // Live websites
+  projects.unshift(
+    {
+      title: "Optimal Family Hospital",
+      category: "Web Development",
+      status: "Live",
+      description: "Public website for Optimal Family Hospital with services and contact information.",
+      technologies: ["React", "Tailwind CSS", "Vite"],
+      duration: "Ongoing",
+      teamSize: "2 developers",
+      liveUrl: "https://optimalfamilyhospital.com",
+      githubUrl: "#"
+    },
+    {
+      title: "FM Ngola",
+      category: "Web Development",
+      status: "Live",
+      description: "Modern company website showcasing brand, services, and engagement channels.",
+      technologies: ["React", "Tailwind CSS", "Vite"],
+      duration: "Ongoing",
+      teamSize: "2 developers",
+      liveUrl: "https://fmngola.netlify.app",
+      githubUrl: "#"
+    },
+    {
+      title: "M Ngola",
+      category: "Web Development",
+      status: "Live",
+      description: "Clean, responsive business website with service highlights and contact options.",
+      technologies: ["React", "Tailwind CSS", "Vite"],
+      duration: "Ongoing",
+      teamSize: "2 developers",
+      liveUrl: "https://mngola.netlify.app",
+      githubUrl: "#"
+    }
+  );
 
   return (
     <section className="py-16 section-bg" style={{ backgroundImage: "linear-gradient(135deg, rgba(11,61,46,0.05), rgba(46,58,89,0.05))" }}>

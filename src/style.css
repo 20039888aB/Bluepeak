@@ -168,3 +168,150 @@ html, body, #root {
   border-radius: 8px;
   padding: 1rem;
 }
+
+/* Fixed phone icon styles */
+.fixed-phone-icon {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999;
+  pointer-events: auto;
+}
+
+.fixed-phone-icon button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.fixed-phone-icon button:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Contact menu styles */
+.fixed-phone-icon .absolute {
+  z-index: 1001;
+}
+
+/* Form input styles to ensure they work properly */
+.form-input,
+.form-select,
+.form-textarea {
+  background-color: #1e293b !important;
+  border: 2px solid #475569 !important;
+  color: #ffffff !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: #3A7BD5 !important;
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1) !important;
+  outline: none !important;
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Ensure form elements are interactive and accept input */
+input, select, textarea {
+  pointer-events: auto !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 2px solid #475569 !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  outline: none !important;
+  transition: border-color 0.3s ease !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3A7BD5 !important;
+  box-shadow: 0 0 0 3px rgba(58, 123, 213, 0.1) !important;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Override any conflicting styles */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+select,
+textarea {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border: 2px solid #475569 !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  font-size: 16px !important;
+  outline: none !important;
+  transition: border-color 0.3s ease !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Blue Peak AI Chatbot Styles */
+.chatbot-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.chatbot-button {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3A7BD5, #0B3D2E);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.chatbot-button:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.chatbot-window {
+  width: 384px;
+  height: 500px;
+  background: #0f172a;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  border: 1px solid #334155;
+  overflow: hidden;
+}
+
+/* Ensure chatbot doesn't interfere with phone icons */
+.fixed-phone-icon {
+  z-index: 999;
+}
+
+.chatbot-container {
+  z-index: 1000;
+}

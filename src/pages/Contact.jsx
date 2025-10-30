@@ -13,8 +13,10 @@ import {
   FaPaperPlane,
   FaCheckCircle,
   FaExclamationCircle,
-  FaSpinner
+  FaSpinner,
+  FaWhatsapp
 } from "react-icons/fa";
+import ContactForm from "../components/ContactForm";
 
 const ContactInfo = ({ icon: Icon, title, description, delay = 0 }) => {
   const ref = useRef(null);
@@ -22,6 +24,7 @@ const ContactInfo = ({ icon: Icon, title, description, delay = 0 }) => {
 
   return (
     <motion.div
+      id={title === "Email Us" ? "contact-email" : undefined}
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
@@ -42,89 +45,18 @@ const ContactInfo = ({ icon: Icon, title, description, delay = 0 }) => {
 };
 
 export default function Contact() {
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    company: "",
-    service: "",
-    budget: "",
-    message: ""
-  });
-  const [status, setStatus] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleChange = (e) => {
-    setForm(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setStatus(null);
-
-    try {
-      // Save to Firestore
-      const ref = collection(db, "inquiries");
-      await addDoc(ref, {
-        ...form,
-        createdAt: serverTimestamp(),
-        source: "website_contact_form"
-      });
-
-      // Send email via EmailJS (optional - you'll need to configure this)
-      try {
-        const serviceId = "YOUR_EMAILJS_SERVICE_ID";
-        const templateId = "YOUR_EMAILJS_TEMPLATE_ID";
-        const userId = "YOUR_EMAILJS_USER_ID";
-        
-        const templateParams = {
-          from_name: form.name,
-          from_email: form.email,
-          from_phone: form.phone,
-          company: form.company,
-          service: form.service,
-          budget: form.budget,
-          message: form.message,
-          to_name: "Blue Peak Team"
-        };
-
-        await emailjs.send(serviceId, templateId, templateParams, userId);
-      } catch (emailError) {
-        console.log("EmailJS not configured, but form saved to Firestore");
-      }
-
-      setStatus("success");
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        company: "",
-        service: "",
-        budget: "",
-        message: ""
-      });
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setStatus("error");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // Using new ContactForm which directly writes to Firestore
 
   const contactInfo = [
     {
       icon: FaEnvelope,
       title: "Email Us",
-      description: "contact@bluepeak.com\ninfo@bluepeak.com"
+      description: "bluepeakw@gmail.com\nSend us an email — we reply within 24 hours"
     },
     {
       icon: FaPhone,
       title: "Call Us",
-      description: "+1 (555) 123-4567\n+1 (555) 987-6543"
+      description: "+254 115 034 956 (Felix Mngola)\n+254 115 138 594 (Felix Mngola)"
     },
     {
       icon: FaMapMarkerAlt,
@@ -173,6 +105,39 @@ export default function Contact() {
               />
             ))}
           </div>
+          
+          {/* Direct Contact Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h3 className="text-2xl font-bold text-white mb-6">Get In Touch Directly</h3>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <motion.a
+                href="tel:+254115034956"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+              >
+                <FaPhone />
+                Call: +254 115 034 956
+              </motion.a>
+              <motion.a
+                href="https://wa.me/254115138594"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3 px-6 py-4 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+              >
+                <FaWhatsapp />
+                WhatsApp: +254 115 138 594
+              </motion.a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -201,183 +166,7 @@ export default function Contact() {
             viewport={{ once: true }}
             className="p-8 rounded-xl bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50"
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name and Email */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
-                    Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={form.name}
-                    onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:border-skyblue focus:outline-none transition-colors"
-                    placeholder="Your full name"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={form.email}
-                    onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:border-skyblue focus:outline-none transition-colors"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-              </div>
-
-              {/* Phone and Company */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-slate-300 mb-2">
-                    Phone Number
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:border-skyblue focus:outline-none transition-colors"
-                    placeholder="+1 (555) 123-4567"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-slate-300 mb-2">
-                    Company Name
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={form.company}
-                    onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:border-skyblue focus:outline-none transition-colors"
-                    placeholder="Your company name"
-                  />
-                </div>
-              </div>
-
-              {/* Service and Budget */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="service" className="block text-sm font-medium text-slate-300 mb-2">
-                    Service Interested In
-                  </label>
-                  <select
-                    id="service"
-                    name="service"
-                    value={form.service}
-                    onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white focus:border-skyblue focus:outline-none transition-colors"
-                  >
-                    <option value="">Select a service</option>
-                    <option value="Web Development">Web Development</option>
-                    <option value="E-commerce">E-commerce</option>
-                    <option value="Cloud Solutions">Cloud Solutions</option>
-                    <option value="Cybersecurity">Cybersecurity</option>
-                    <option value="Mobile Development">Mobile Development</option>
-                    <option value="UI/UX Design">UI/UX Design</option>
-                    <option value="Digital Marketing">Digital Marketing</option>
-                    <option value="IT Consulting">IT Consulting</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="budget" className="block text-sm font-medium text-slate-300 mb-2">
-                    Project Budget
-                  </label>
-                  <select
-                    id="budget"
-                    name="budget"
-                    value={form.budget}
-                    onChange={handleChange}
-                    className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white focus:border-skyblue focus:outline-none transition-colors"
-                  >
-                    <option value="">Select budget range</option>
-                    <option value="Under $5,000">Under $5,000</option>
-                    <option value="$5,000 - $10,000">$5,000 - $10,000</option>
-                    <option value="$10,000 - $25,000">$10,000 - $25,000</option>
-                    <option value="$25,000 - $50,000">$25,000 - $50,000</option>
-                    <option value="$50,000+">$50,000+</option>
-                    <option value="To be discussed">To be discussed</option>
-                  </select>
-                </div>
-              </div>
-
-              {/* Message */}
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
-                  Project Details / Message *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={6}
-                  value={form.message}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-slate-700/50 border border-slate-600 text-white placeholder-slate-400 focus:border-skyblue focus:outline-none transition-colors resize-none"
-                  placeholder="Tell us about your project, requirements, timeline, or any questions you have..."
-                />
-              </div>
-
-              {/* Submit Button */}
-              <div className="flex items-center gap-4">
-                <motion.button
-                  type="submit"
-                  disabled={isSubmitting}
-                  whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
-                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                  className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-skyblue to-forest text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <FaSpinner className="animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <FaPaperPlane />
-                      Send Message
-                    </>
-                  )}
-                </motion.button>
-
-                {/* Status Messages */}
-                {status === "success" && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-2 text-green-400"
-                  >
-                    <FaCheckCircle />
-                    <span>Message sent successfully!</span>
-                  </motion.div>
-                )}
-
-                {status === "error" && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center gap-2 text-red-400"
-                  >
-                    <FaExclamationCircle />
-                    <span>Something went wrong. Please try again.</span>
-                  </motion.div>
-                )}
-              </div>
-            </form>
+            <ContactForm />
           </motion.div>
         </div>
       </section>

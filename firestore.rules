@@ -1,0 +1,25 @@
+// firestore.rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isValidInquiry() {
+      return request.resource.data.keys().hasAll(['name','email','message','createdAt','source']) &&
+             request.resource.data.name is string &&
+             request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100 &&
+             request.resource.data.email is string &&
+             request.resource.data.email.size() > 0 && request.resource.data.email.size() <= 254 &&
+             request.resource.data.message is string &&
+             request.resource.data.message.size() > 0 && request.resource.data.message.size() <= 5000 &&
+             request.resource.data.source == 'website_contact_form';
+    }
+
+    match /inquiries/{docId} {
+      allow create: if isValidInquiry();
+      allow read, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

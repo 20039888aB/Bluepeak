@@ -7,4 +7,4 @@ echo 2. All dependencies installed (npm install)
 echo 3. Firebase configured (src/firebase.js)
 echo.
 echo Starting development server...
-npm run dev
+npm start
