@@ -58,17 +58,24 @@ const BluePeakAI = () => {
       security: "We provide cybersecurity services including penetration testing, vulnerability assessments, SSL installation, and security audits to protect your digital assets.",
       mobile: "We develop cross-platform mobile applications for iOS and Android using React Native and native development approaches.",
       design: "Our UI/UX design services include user interface design, user experience optimization, branding, and visual identity creation.",
-      marketing: "We offer digital marketing services including SEO, social media management, content marketing, and online advertising campaigns."
+      marketing: "We offer digital marketing services including SEO, social media management, content marketing, and online advertising campaigns.",
+      fullstack: "Need end-to-end product delivery? Our co-founders Felix Mngola Onyango and Benson Maina lead full-stack builds that combine pixel-perfect frontends with robust backend architecture, CI/CD pipelines, and production monitoring."
     },
     company: {
-      about: "Blue Peak Web-Solutions is a technology company founded by two passionate brothers, Felix Mngola Onyango and Andrew Mwandoe Onyango. We specialize in building digital peaks for businesses worldwide, combining technical expertise with creative vision.",
+      about: "Blue Peak Web-Solutions is a technology company founded by brothers Felix Mngola Onyango and Andrew Mwandoe Onyango together with their fellow co-founder Benson Maina. We specialize in building digital peaks for businesses worldwide, combining technical expertise with creative vision.",
       mission: "Our mission is to empower businesses with innovative technology solutions that drive growth, enhance efficiency, and create meaningful digital experiences.",
       vision: "To be the leading technology partner for businesses seeking to climb digital peaks, providing cutting-edge solutions that enable organizations to compete and thrive in the digital landscape.",
-      contact: "You can reach us at +254 115 034 956 (Felix Mngola Onyango) or +254 115 138 594 (Andrew Mwandoe Onyango). We also have WhatsApp available and email at bluepeakw@gmail.com."
+      contact: "You can reach us at +254 115 034 956 (Felix Mngola Onyango) or +254 115 138 594 (Andrew Mwandoe Onyango). For full-stack engagements, co-founder Benson Maina can be reached through bluepeakw@gmail.com. We also have WhatsApp available at the listed numbers."
     },
     projects: "We've completed over 50 projects including hospital management systems, e-commerce platforms, election management systems, school management portals, and mobile banking applications. Our projects span various industries and use cutting-edge technologies.",
     pricingSummary: "Pricing depends on scope, integrations, and timelines. Core website bundles start below $400, while larger web apps, mobile builds, or multi-platform programs can reach $35,000+. Share your must-haves and I’ll map you to an exact bracket.",
-    location: "We provide global remote services and are available worldwide. Our team is based in Kenya but serves clients globally with our comprehensive technology solutions."
+    location: "We provide global remote services and are available worldwide. Our team is based in Kenya but serves clients globally with our comprehensive technology solutions.",
+    team: {
+      founders: "Our leadership trio includes brothers Felix Mngola Onyango (full-stack engineer with a frontend craftsman focus) and Andrew Mwandoe Onyango (backend and DevOps lead) alongside fellow co-founder Benson Maina, a full-stack web developer who bridges UI polish with backend reliability.",
+      benson: "Benson Maina is our co-founder and resident full-stack developer. He architects scalable backend services, builds high-performing React/Next.js frontends, and ensures reliable deployments with CI/CD and observability.",
+      felix: "Felix Mngola Onyango blends frontend artistry with full-stack capability—handling everything from design systems to Node.js/Django services to ensure cohesive product delivery.",
+      fullstack: "Full-stack projects are co-led by Felix Mngola Onyango and Benson Maina, covering product discovery, frontend architecture, backend services, database design, and infrastructure automation to ship complete, tested solutions."
+    }
   };
 
   const pricingCatalog = [
@@ -259,6 +266,9 @@ const BluePeakAI = () => {
     if (message.includes('marketing') || message.includes('seo')) {
       return knowledgeBase.services.marketing;
     }
+    if (message.includes('full stack') || message.includes('fullstack')) {
+      return knowledgeBase.services.fullstack;
+    }
     if (message.includes('service') || message.includes('what do you do')) {
       return "We offer a comprehensive range of technology services including Web Development, Cloud Solutions, Cybersecurity, Mobile Development, UI/UX Design, Digital Marketing, IT Consulting, and Custom Project Development. What specific service are you interested in?";
     }
@@ -275,6 +285,20 @@ const BluePeakAI = () => {
     }
     if (message.includes('contact') || message.includes('phone') || message.includes('email')) {
       return knowledgeBase.company.contact;
+    }
+    if (message.includes('benson') || message.includes('maina')) {
+      return knowledgeBase.company.team.benson;
+    }
+    if (message.includes('felix') && message.includes('full')) {
+      return knowledgeBase.company.team.felix;
+    }
+    if (
+      message.includes('founder') ||
+      message.includes('co-founder') ||
+      message.includes('cofounder') ||
+      message.includes('leadership')
+    ) {
+      return knowledgeBase.company.team.founders;
     }
 
     // Projects
@@ -308,6 +332,10 @@ const BluePeakAI = () => {
     // Help
     if (message.includes('help') || message.includes('what can you do')) {
       return "I can help you with information about our services, company details, project examples, pricing, contact information, and answer questions about Blue Peak Web-Solutions. What would you like to know?";
+    }
+
+    if (message.includes('team')) {
+      return knowledgeBase.company.team.founders;
     }
 
     const defaultResponses = [

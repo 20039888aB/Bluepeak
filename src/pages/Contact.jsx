@@ -14,7 +14,8 @@ import {
   FaCheckCircle,
   FaExclamationCircle,
   FaSpinner,
-  FaWhatsapp
+  FaWhatsapp,
+  FaUsers
 } from "react-icons/fa";
 import ContactForm from "../components/ContactForm";
 
@@ -56,7 +57,12 @@ export default function Contact() {
     {
       icon: FaPhone,
       title: "Call Us",
-      description: "+254 115 034 956 (Felix Mngola Onyango)\n+254 115 138 594 (Andrew Mwandoe Onyango)"
+      description: "+254 115 034 956 (Felix Mngola Onyango – Full-Stack Engineer)\n+254 115 138 594 (Andrew Mwandoe Onyango – Backend & DevOps)\nFor full-stack builds, ask for Benson Maina via our main line."
+    },
+    {
+      icon: FaUsers,
+      title: "Leadership Team",
+      description: "Co-founders: Felix Mngola Onyango (Full-Stack Engineer), Andrew Mwandoe Onyango (Backend & DevOps), Benson Maina (Full-Stack Web Developer)."
     },
     {
       icon: FaMapMarkerAlt,

@@ -110,7 +110,7 @@ export default function About() {
                 About <span className="gradient-text">Blue Peak</span>
               </h1>
               <p className="text-xl text-slate-300 leading-relaxed mb-8">
-                Founded by two passionate brothers, Blue Peak Web-Solutions is a technology company 
+                Founded by brothers Felix Mngola Onyango and Andrew Mwandoe Onyango together with their fellow co-founder Benson Maina, Blue Peak Web-Solutions is a technology company 
                 dedicated to building digital peaks for businesses worldwide. We combine technical 
                 expertise with creative vision to deliver exceptional digital solutions.
               </p>
@@ -291,7 +291,7 @@ export default function About() {
               {
                 year: "2021",
                 title: "The Beginning",
-                description: "Two brothers with a shared passion for technology and innovation decided to start Blue Peak Web-Solutions."
+                description: "Brothers Felix and Andrew Onyango teamed up with fellow engineer Benson Maina to launch Blue Peak Web-Solutions, blending design, backend, and full-stack expertise from day one."
               },
               {
                 year: "2022",

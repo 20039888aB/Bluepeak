@@ -37,7 +37,7 @@ const TeamMember = ({ member, delay = 0 }) => {
     >
       {/* Profile Image */}
       <div className="relative mb-6">
-        <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-skyblue to-forest p-1">
+        <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-skyblue to-forest p-1 team-avatar-glow">
           <div className="w-full h-full rounded-full bg-slate-800 overflow-hidden flex items-center justify-center">
             {member.image ? (
               <img
@@ -101,10 +101,10 @@ export default function TeamSection() {
   const teamMembers = [
     {
       name: "Felix Mngola Onyango",
-      role: "Co-Founder / Lead Frontend Engineer",
-      bio: "Passionate about creating beautiful, responsive user interfaces and seamless user experiences.",
+      role: "Co-Founder / Full-Stack Engineer",
+      bio: "Full-stack engineer with a frontend craftsman’s touch, delivering cohesive experiences from design systems to backend services.",
       image: "/images/Felix.jpg",
-      skills: ["React", "TypeScript", "UI/UX", "Animation"],
+      skills: ["React", "TypeScript", "Node.js", "UI/UX", "Animation"],
       social: [
         { icon: FaGithub, url: "#" },
         { icon: FaLinkedin, url: "#" },
@@ -118,6 +118,19 @@ export default function TeamSection() {
       bio: "Expert in scalable backend systems, cloud infrastructure, and database optimization.",
       image: "/images/Andrew.jpg",
       skills: ["Python", "Django", "AWS", "Docker"],
+      social: [
+        { icon: FaGithub, url: "#" },
+        { icon: FaLinkedin, url: "#" },
+        { icon: FaTwitter, url: "#" },
+        { icon: FaEnvelope, url: "mailto:bluepeakw@gmail.com" }
+      ]
+    },
+    {
+      name: "Benson Maina",
+      role: "Co-Founder / Full-Stack Web Developer",
+      bio: "Bridges frontend polish with backend performance, delivering end-to-end platforms that scale.",
+      image: "/images/Benson.jpg",
+      skills: ["React", "Next.js", "Node.js", "Django", "PostgreSQL", "API Design"],
       social: [
         { icon: FaGithub, url: "#" },
         { icon: FaLinkedin, url: "#" },
@@ -141,7 +154,7 @@ export default function TeamSection() {
             Meet Our Key Developers
           </h2>
           <p className="text-slate-300 max-w-3xl mx-auto">
-            The passionate team behind Blue Peak Web-Solutions. We combine technical expertise 
+            The passionate team behind Blue Peak Web-Solutions is led by co-founders Felix Mngola Onyango, Andrew Mwandoe Onyango, and Benson Maina. Together we combine technical expertise 
             with creative vision to deliver exceptional digital solutions.
           </p>
         </motion.div>

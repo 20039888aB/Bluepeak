@@ -315,3 +315,24 @@ textarea {
 .chatbot-container {
   z-index: 1000;
 }
+
+@keyframes avatarHeartbeat {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 14px rgba(58, 123, 213, 0.35), 0 0 28px rgba(16, 185, 129, 0.2);
+  }
+  30% {
+    transform: scale(1.05);
+    box-shadow: 0 0 22px rgba(16, 185, 129, 0.55), 0 0 34px rgba(58, 123, 213, 0.35);
+  }
+  55% {
+    transform: scale(0.97);
+    box-shadow: 0 0 18px rgba(58, 123, 213, 0.5), 0 0 28px rgba(16, 185, 129, 0.25);
+  }
+}
+
+.team-avatar-glow {
+  animation: avatarHeartbeat 2.8s ease-in-out infinite;
+  box-shadow: 0 0 14px rgba(58, 123, 213, 0.35);
+  will-change: transform, box-shadow;
+}
