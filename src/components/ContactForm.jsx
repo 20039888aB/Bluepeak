@@ -28,24 +28,66 @@ export default function ContactForm() {
     setStatusText("");
 
     try {
-      await addDoc(collection(db, "messages"), {
-        name: trimmedName,
-        email: trimmedEmail,
-        message: trimmedMessage,
-        createdAt: serverTimestamp()
-      });
+      // 1) Save to Firestore first (messages). If rules block, fallback to inquiries shape.
+      try {
+        await addDoc(collection(db, "messages"), {
+          name: trimmedName,
+          email: trimmedEmail,
+          message: trimmedMessage,
+          createdAt: serverTimestamp()
+        });
+      } catch (err) {
+        // If rules cause permission error, fallback to `inquiries` with required 'source'
+        if (err && err.code === "permission-denied") {
+          await addDoc(collection(db, "inquiries"), {
+            name: trimmedName,
+            email: trimmedEmail,
+            message: trimmedMessage,
+            createdAt: serverTimestamp(),
+            source: "website_contact_form"
+          });
+        } else {
+          throw err;
+        }
+      }
+      
+      // 2) Attempt to send email via EmailJS (non-blocking for success)
+      try {
+        // Primary attempt with your provided IDs and public key
+        await emailjs.send(
+          "service_k9f1r3a",
+          "template_u6vph33",
+          { name: trimmedName, email: trimmedEmail, message: trimmedMessage },
+          "ooRPw6P35bA96Jr64"
+        );
+        setStatusText("✅ Message sent successfully!");
+      } catch (emailErr) {
+        console.error("EmailJS Error (primary):", emailErr);
+        // Fallback attempt with common EmailJS variable names
+        try {
+          await emailjs.send(
+            "service_k9f1r3a",
+            "template_u6vph33",
+            { from_name: trimmedName, reply_to: trimmedEmail, message: trimmedMessage },
+            "ooRPw6P35bA96Jr64"
+          );
+          setStatusText("✅ Message sent successfully!");
+        } catch (emailErr2) {
+          console.error("EmailJS Error (fallback):", emailErr2);
+          const errorDetail = emailErr2?.text || emailErr2?.message || emailErr?.text || emailErr?.message;
+          setStatusText(
+            errorDetail
+              ? `⚠️ Message stored, but email not sent. EmailJS says: ${errorDetail}`
+              : "⚠️ Message stored, but email not sent."
+          );
+        }
+      }
 
-      await emailjs.send(
-        "service_k9f1r3a",
-        "template_u6vph33",
-        { name: trimmedName, email: trimmedEmail, message: trimmedMessage }
-      );
-
-      setStatusText("✅ Message sent successfully!");
       setName("");
       setEmail("");
       setMessage("");
-    } catch (err) {
+    } catch (firestoreErr) {
+      console.error("Firestore Error:", firestoreErr);
       setStatusText("❌ Failed to send message. Please try again.");
     } finally {
       setIsSubmitting(false);
@@ -61,7 +103,10 @@ export default function ContactForm() {
     maxWidth: 420,
     boxShadow: "0 0 15px rgba(0, 255, 255, 0.3)",
     transition: "0.3s ease-in-out",
-    margin: "0 auto"
+    margin: "0 auto",
+    position: "relative",
+    zIndex: 10,
+    pointerEvents: "auto"
   };
 
   const inputStyle = {

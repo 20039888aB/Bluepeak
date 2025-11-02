@@ -38,10 +38,19 @@ const TeamMember = ({ member, delay = 0 }) => {
       {/* Profile Image */}
       <div className="relative mb-6">
         <div className="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-skyblue to-forest p-1">
-          <div className="w-full h-full rounded-full bg-slate-800 flex items-center justify-center">
-            <span className="text-2xl font-bold text-white">
-              {member.name.split(' ').map(n => n[0]).join('')}
-            </span>
+          <div className="w-full h-full rounded-full bg-slate-800 overflow-hidden flex items-center justify-center">
+            {member.image ? (
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <span className="text-2xl font-bold text-white">
+                {member.name.split(' ').map(n => n[0]).join('')}
+              </span>
+            )}
           </div>
         </div>
         <div className="absolute -bottom-2 -right-2 p-2 rounded-full bg-slate-800 border-2 border-slate-700">
@@ -91,9 +100,10 @@ const TeamMember = ({ member, delay = 0 }) => {
 export default function TeamSection() {
   const teamMembers = [
     {
-      name: "Felix Onyango",
+      name: "Felix Mngola Onyango",
       role: "Co-Founder / Lead Frontend Engineer",
       bio: "Passionate about creating beautiful, responsive user interfaces and seamless user experiences.",
+      image: "/images/Felix.jpg",
       skills: ["React", "TypeScript", "UI/UX", "Animation"],
       social: [
         { icon: FaGithub, url: "#" },
@@ -103,9 +113,10 @@ export default function TeamSection() {
       ]
     },
     {
-      name: "Your Brother",
+      name: "Andrew Mwandoe Onyango",
       role: "Co-Founder / Backend & DevOps Engineer",
       bio: "Expert in scalable backend systems, cloud infrastructure, and database optimization.",
+      image: "/images/Andrew.jpg",
       skills: ["Python", "Django", "AWS", "Docker"],
       social: [
         { icon: FaGithub, url: "#" },

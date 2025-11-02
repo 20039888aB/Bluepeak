@@ -56,7 +56,7 @@ export default function Contact() {
     {
       icon: FaPhone,
       title: "Call Us",
-      description: "+254 115 034 956 (Felix Mngola)\n+254 115 138 594 (Felix Mngola)"
+      description: "+254 115 034 956 (Felix Mngola Onyango)\n+254 115 138 594 (Andrew Mwandoe Onyango)"
     },
     {
       icon: FaMapMarkerAlt,

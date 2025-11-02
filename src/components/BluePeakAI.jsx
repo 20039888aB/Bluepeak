@@ -61,24 +61,185 @@ const BluePeakAI = () => {
       marketing: "We offer digital marketing services including SEO, social media management, content marketing, and online advertising campaigns."
     },
     company: {
-      about: "Blue Peak Web-Solutions is a technology company founded by two passionate brothers, Felix Mngola and Felix Mngola. We specialize in building digital peaks for businesses worldwide, combining technical expertise with creative vision.",
+      about: "Blue Peak Web-Solutions is a technology company founded by two passionate brothers, Felix Mngola Onyango and Andrew Mwandoe Onyango. We specialize in building digital peaks for businesses worldwide, combining technical expertise with creative vision.",
       mission: "Our mission is to empower businesses with innovative technology solutions that drive growth, enhance efficiency, and create meaningful digital experiences.",
       vision: "To be the leading technology partner for businesses seeking to climb digital peaks, providing cutting-edge solutions that enable organizations to compete and thrive in the digital landscape.",
-      contact: "You can reach us at +254 115 034 956 (Felix Mngola) or +254 115 138 594 (Felix Mngola). We also have WhatsApp available and email at bluepeakw@gmail.com."
+      contact: "You can reach us at +254 115 034 956 (Felix Mngola Onyango) or +254 115 138 594 (Andrew Mwandoe Onyango). We also have WhatsApp available and email at bluepeakw@gmail.com."
     },
     projects: "We've completed over 50 projects including hospital management systems, e-commerce platforms, election management systems, school management portals, and mobile banking applications. Our projects span various industries and use cutting-edge technologies.",
-    pricing: "Our pricing varies based on project complexity and requirements. We offer flexible budget ranges from under $5,000 to $50,000+ projects. Contact us for a personalized quote based on your specific needs.",
+    pricingSummary: "Pricing depends on scope, integrations, and timelines. Core website bundles start below $400, while larger web apps, mobile builds, or multi-platform programs can reach $35,000+. Share your must-haves and I’ll map you to an exact bracket.",
     location: "We provide global remote services and are available worldwide. Our team is based in Kenya but serves clients globally with our comprehensive technology solutions."
   };
 
-  const getAIResponse = (userMessage) => {
+  const pricingCatalog = [
+    {
+      id: "web",
+      label: "Modern Websites",
+      keywords: ["web", "website", "site", "corporate"],
+      headlineRange: "$280 – $400",
+      timeline: "2–4 weeks",
+      includes: [
+        "Responsive UI/UX with up to 6 pages",
+        "CMS handover and basic automations",
+        "On-page SEO, analytics & launch support"
+      ],
+      maintenance: "$45–$85/mo (hosting, backups, content tweaks)"
+    },
+    {
+      id: "ecommerce",
+      label: "E-commerce Platforms",
+      keywords: ["e-commerce", "shop", "store", "commerce", "cart"],
+      headlineRange: "$6,500 – $18,000",
+      timeline: "6–12 weeks",
+      includes: [
+        "Catalog & inventory management",
+        "Payment, shipping & tax automation",
+        "Analytics, CRM & marketing integrations"
+      ],
+      maintenance: "$260–$420/mo (security scans, feature rollouts)"
+    },
+    {
+      id: "webapp",
+      label: "Custom Web Applications",
+      keywords: ["portal", "dashboard", "web app", "saas", "platform"],
+      headlineRange: "$9,500 – $28,000",
+      timeline: "8–16 weeks",
+      includes: [
+        "Tailored workflows & API integrations",
+        "Role-based access and analytics",
+        "QA, staging, and deployment pipelines"
+      ],
+      maintenance: "$320–$540/mo (DevOps, scaling, enhancements)"
+    },
+    {
+      id: "mobile",
+      label: "Mobile Apps (iOS & Android)",
+      keywords: ["mobile", "app", "ios", "android", "react native"],
+      headlineRange: "$12,000 – $32,000",
+      timeline: "10–20 weeks",
+      includes: [
+        "Product discovery & UX flows",
+        "Native or cross-platform build",
+        "App store submission & analytics"
+      ],
+      maintenance: "$360–$600/mo (OS updates, new features, monitoring)"
+    },
+    {
+      id: "seo",
+      label: "SEO & Growth Marketing",
+      keywords: ["seo", "marketing", "growth", "ads", "campaign"],
+      headlineRange: "$850 – $2,400 per month",
+      timeline: "3–6 month retainers",
+      includes: [
+        "Technical SEO audits & fixes",
+        "Content strategy & link outreach",
+        "Paid ads setup, tracking & optimization"
+      ],
+      maintenance: "Included in monthly engagement"
+    },
+    {
+      id: "brand",
+      label: "Branding & UI Systems",
+      keywords: ["branding", "brand", "ui", "design", "identity", "logo"],
+      headlineRange: "$1,400 – $6,500",
+      timeline: "3–6 weeks",
+      includes: [
+        "Visual identity & style guide",
+        "Component library & design tokens",
+        "Collateral templates (deck, social, print)"
+      ],
+      maintenance: "On-demand refresh or per-campaign add-ons"
+    }
+  ];
+
+  const buildPricingResponse = (message) => {
+    const lowerMessage = message.toLowerCase();
+    const matched = pricingCatalog.filter((item) =>
+      item.keywords.some((keyword) => lowerMessage.includes(keyword))
+    );
+
+    const sections = (matched.length > 0 ? matched : pricingCatalog).map((item) => {
+      const includesList = item.includes.map((line) => `• ${line}`).join("\n  ");
+      return (
+        `✨ ${item.label}\n` +
+        `  Budget: ${item.headlineRange}\n` +
+        `  Timeline: ${item.timeline}\n` +
+        `  What you get:\n  ${includesList}\n` +
+        `  Ongoing care: ${item.maintenance}\n`
+      );
+    });
+
+    const intro = matched.length
+      ? "Here’s a focused estimate based on what you mentioned:" 
+      : "Here’s our latest pricing roadmap for the core services we offer:";
+
+    const closing =
+      "All quotes include a dedicated project lead, weekly progress reviews, and post-launch support. Share your timeline, feature must-haves, and budget comfort zone and I’ll prepare a personalized estimate in under 24 hours.";
+
+    return `${intro}\n\n${sections.join("\n")}\n${closing}`;
+  };
+
+  const buildTimelineResponse = (message) => {
+    const lowerMessage = message.toLowerCase();
+    const matched = pricingCatalog.filter((item) =>
+      item.keywords.some((keyword) => lowerMessage.includes(keyword))
+    );
+
+    const sections = (matched.length > 0 ? matched : pricingCatalog).map((item) => {
+      return (
+        `⏱️ ${item.label}\n` +
+        `  Estimated delivery: ${item.timeline}\n` +
+        `  Includes: discovery, design, build, QA, and launch support.`
+      );
+    });
+
+    const intro = matched.length
+      ? "Here’s how long projects like yours typically take:" 
+      : "Here’s the delivery window we usually quote for our core services:";
+
+    const closing =
+      "Exact timing depends on revision rounds, integrations, and stakeholder feedback—but we build buffer into every plan so launches stay on track. Share your target date and we’ll align the sprint plan for you.";
+
+    return `${intro}\n\n${sections.join("\n\n")}\n\n${closing}`;
+  };
+
+  const callLLM = async (userMessage, historyPayload) => {
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          message: userMessage,
+          history: historyPayload
+        })
+      });
+
+      if (!response.ok) {
+        const detail = await response.text();
+        throw new Error(detail || `LLM request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      if (data?.reply) {
+        return data.reply.trim();
+      }
+    } catch (error) {
+      console.error("LLM fetch error:", error);
+    }
+
+    return null;
+  };
+
+  const getAIResponse = async (userMessage, historyPayload) => {
     const message = userMessage.toLowerCase();
-    
+
     // Greetings
     if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
       return knowledgeBase.greetings[Math.floor(Math.random() * knowledgeBase.greetings.length)];
     }
-    
+
     // Services
     if (message.includes('web development') || message.includes('website')) {
       return knowledgeBase.services.web;
@@ -101,7 +262,7 @@ const BluePeakAI = () => {
     if (message.includes('service') || message.includes('what do you do')) {
       return "We offer a comprehensive range of technology services including Web Development, Cloud Solutions, Cybersecurity, Mobile Development, UI/UX Design, Digital Marketing, IT Consulting, and Custom Project Development. What specific service are you interested in?";
     }
-    
+
     // Company Information
     if (message.includes('about') || message.includes('company') || message.includes('who are you')) {
       return knowledgeBase.company.about;
@@ -115,45 +276,63 @@ const BluePeakAI = () => {
     if (message.includes('contact') || message.includes('phone') || message.includes('email')) {
       return knowledgeBase.company.contact;
     }
-    
+
     // Projects
     if (message.includes('project') || message.includes('portfolio') || message.includes('work')) {
       return knowledgeBase.projects;
     }
-    
+
     // Pricing
-    if (message.includes('price') || message.includes('cost') || message.includes('budget')) {
-      return knowledgeBase.pricing;
+    if (message.includes('price') || message.includes('cost') || message.includes('budget') || message.includes('pricing')) {
+      return buildPricingResponse(message);
     }
-    
+
+    // Timeline
+    if (
+      message.includes('how long') ||
+      message.includes('timeline') ||
+      message.includes('timeframe') ||
+      message.includes('time frame') ||
+      message.includes('duration') ||
+      message.includes('turnaround') ||
+      message.includes('delivery time')
+    ) {
+      return buildTimelineResponse(userMessage);
+    }
+
     // Location
     if (message.includes('location') || message.includes('where') || message.includes('based')) {
       return knowledgeBase.location;
     }
-    
+
     // Help
     if (message.includes('help') || message.includes('what can you do')) {
       return "I can help you with information about our services, company details, project examples, pricing, contact information, and answer questions about Blue Peak Web-Solutions. What would you like to know?";
     }
-    
-    // Default responses
+
     const defaultResponses = [
       "That's an interesting question! I'd be happy to help you with that. Could you provide more details about what you're looking for?",
       "I understand you're asking about that topic. Let me connect you with the right information. What specific aspect would you like to know more about?",
       "Great question! I can help you with information about our services, projects, or company details. What specific area interests you most?",
       "I'm here to help! Could you tell me more about what you're looking for so I can provide you with the most relevant information?"
     ];
-    
+
+    const llmFallback = await callLLM(userMessage, historyPayload);
+    if (llmFallback) {
+      return llmFallback;
+    }
+
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   };
 
   const handleSendMessage = async () => {
     if (!inputText.trim()) return;
 
+    const messageText = inputText.trim();
     const userMessage = {
       id: Date.now(),
       type: 'user',
-      text: inputText,
+      text: messageText,
       timestamp: new Date()
     };
 
@@ -161,19 +340,36 @@ const BluePeakAI = () => {
     setInputText("");
     setIsTyping(true);
 
-    // Simulate AI thinking time
-    setTimeout(() => {
-      const aiResponse = getAIResponse(inputText);
+    try {
+      const historyPayload = [...messages, userMessage]
+        .slice(-8)
+        .map(({ type, text }) => ({ type, text }));
+
+      const aiResponse = await getAIResponse(messageText, historyPayload);
+
+      const simulatedDelay = 600 + Math.random() * 800;
+      await new Promise((resolve) => setTimeout(resolve, simulatedDelay));
+
       const botMessage = {
         id: Date.now() + 1,
         type: 'bot',
-        text: aiResponse,
+        text: aiResponse || "I'm here for you! Could you rephrase that so I can help better?",
         timestamp: new Date()
       };
-      
+
       setMessages(prev => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Chat response error:", error);
+      const fallback = {
+        id: Date.now() + 2,
+        type: 'bot',
+        text: "I’m sorry, I’m having trouble responding right now. Could you try again in a moment?",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, fallback]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
+    }
   };
 
   const handleKeyPress = (e) => {
