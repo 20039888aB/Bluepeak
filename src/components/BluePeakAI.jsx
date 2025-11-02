@@ -28,6 +28,7 @@ const BluePeakAI = () => {
   ]);
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [viewport, setViewport] = useState("desktop");
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
@@ -44,6 +45,46 @@ const BluePeakAI = () => {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const determineViewport = () => {
+      const width = window.innerWidth;
+      if (width < 640) return "mobile";
+      if (width < 1024) return "tablet";
+      return "desktop";
+    };
+
+    const updateViewport = () => {
+      setViewport(determineViewport());
+    };
+
+    updateViewport();
+    window.addEventListener("resize", updateViewport);
+    return () => window.removeEventListener("resize", updateViewport);
+  }, []);
+
+  const isMobile = viewport === "mobile";
+  const isTablet = viewport === "tablet";
+
+  const chatButtonClasses = isMobile
+    ? "fixed bottom-4 right-4 z-50 w-14 h-14"
+    : isTablet
+    ? "fixed bottom-6 right-12 z-50 w-16 h-16"
+    : "fixed bottom-6 right-24 z-50 w-16 h-16";
+
+  const chatWindowPositionClasses = isMobile
+    ? "fixed inset-x-4 bottom-[88px]"
+    : isTablet
+    ? "fixed bottom-28 right-12"
+    : "fixed bottom-24 right-24";
+
+  const chatWindowSizingClasses = isMobile
+    ? "w-auto h-[65vh] max-h-[520px]"
+    : isTablet
+    ? "w-[28rem] h-[520px]"
+    : "w-96 h-[500px]";
 
   // AI Knowledge Base
   const knowledgeBase = {
@@ -419,7 +460,7 @@ const BluePeakAI = () => {
       {/* Chat Button */}
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-24 z-50 w-16 h-16 bg-gradient-to-r from-skyblue to-forest text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
+        className={`${chatButtonClasses} bg-gradient-to-r from-skyblue to-forest text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center`}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         title="Chat with Blue Peak AI"
@@ -434,7 +475,8 @@ const BluePeakAI = () => {
             initial={{ opacity: 0, y: 20, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.8 }}
-            className="fixed bottom-24 right-24 z-50 w-96 h-[500px] bg-slate-900 rounded-xl shadow-2xl border border-slate-700 overflow-hidden"
+            className={`${chatWindowPositionClasses} ${chatWindowSizingClasses} z-50 bg-slate-900 rounded-2xl shadow-2xl border border-slate-700/70 overflow-hidden flex flex-col`}
+            style={isMobile ? { maxHeight: "calc(100vh - 140px)" } : undefined}
           >
             {/* Chat Header */}
             <div className="bg-gradient-to-r from-skyblue to-forest p-4 text-white">
@@ -456,7 +498,10 @@ const BluePeakAI = () => {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[350px]">
+            <div
+              className="flex-1 overflow-y-auto p-4 space-y-4"
+              style={isMobile ? { maxHeight: "calc(100vh - 260px)" } : undefined}
+            >
               {messages.map((message) => (
                 <motion.div
                   key={message.id}
@@ -509,7 +554,7 @@ const BluePeakAI = () => {
                   <button
                     key={index}
                     onClick={() => setInputText(action.text)}
-                    className="flex items-center gap-1 px-2 py-1 text-xs bg-slate-800 text-slate-300 rounded hover:bg-slate-700 transition-colors"
+                    className="flex items-center gap-1 px-3 py-1 text-xs bg-slate-800 text-slate-300 rounded hover:bg-slate-700 transition-colors"
                   >
                     <action.icon size={10} />
                     {action.text}
