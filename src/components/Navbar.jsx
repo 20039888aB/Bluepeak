@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { GiMountainPeak } from "react-icons/gi";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 const NavItem = ({ to, children, onClick }) => (

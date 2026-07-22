@@ -336,3 +336,34 @@ textarea {
   box-shadow: 0 0 14px rgba(58, 123, 213, 0.35);
   will-change: transform, box-shadow;
 }
+
+/* Admin invoice / quotation print — hide chrome, print paper document only */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  .admin-print-area,
+  .admin-print-area * {
+    visibility: visible !important;
+  }
+
+  .admin-print-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .print\:hidden {
+    display: none !important;
+  }
+
+  #printable-document {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+}
